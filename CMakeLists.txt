@@ -14,7 +14,11 @@ find_package (Boost REQUIRED program_options)
 
 if (Boost_FOUND)
     include_directories (${Boost_INCLUDE_DIRS})
-    add_executable(boost_test main.cpp)
+    add_executable(boost_test
+    bayan.cpp
+    hasher.cpp
+    utils.cpp
+    main.cpp)
     target_link_libraries(boost_test ${Boost_LIBRARIES})
 endif ()
 
