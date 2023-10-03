@@ -1,11 +1,35 @@
 #include <iostream>
-#include <boost/program_options.hpp>
+#include <boost/filesystem/operations.hpp>
 
 #include "lib.h"
 
-int main() {
-    boost::program_options::options_description desc("Allowed options");
-    desc.add_options()
-        ("help", "produce help message");
-    std::cout << desc << std::endl;
-}
+int main(int, char **) {
+    boost::filesystem::directory_iterator begin("./");
+    boost::filesystem::directory_iterator end; 
+        for (; begin != end; ++ begin) {
+            boost::filesystem::file_status fs = 
+            boost::filesystem::status(*begin); {
+                switch (fs.type()) {
+                    case boost::filesystem::regular_file: 
+                        std::cout << "FILE ";
+                        break;
+                    case boost::filesystem::symlink_file:
+                        std::cout << "SYMLINK ";
+                        break;
+                    case boost::filesystem::directory_file: 
+                        std::cout << "DIRECTORY ";
+                        break;
+                    default: 
+                        std::cout << "OTHER ";
+                        break;
+                    }
+                if (fs.permissions() & boost::filesystem::owner_write) {
+                        std::cout << "W ";
+                    } else {
+                        std::cout << " ";
+                    }
+            }
+        std::cout << *begin << '\n';
+        } /*for*/
+    return 0;
+} /*main*/
