@@ -100,10 +100,13 @@ void bayan::DublicatesFinder::getDublicates(std::vector<FileInfo>& files, PBayan
         std::vector<std::string> dublicate_files_paths;
         for(auto iter_file2 = iter_file1 + 1; iter_file2 != files.end();)
         {
-            if(compareFiles(*iter_file1, *iter_file2, Hasher, settings->block_size))
+            if (iter_file1->file_size == iter_file2->file_size)
             {
-                dublicate_files_paths.push_back(iter_file2->path);
-                iter_file2 = files.erase(iter_file2);
+                if(compareFiles(*iter_file1, *iter_file2, Hasher, settings->block_size))
+                {
+                    dublicate_files_paths.push_back(iter_file2->path);
+                    iter_file2 = files.erase(iter_file2);
+                }
             }
             else
             {
